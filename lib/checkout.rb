@@ -15,16 +15,15 @@ class Checkout
 
     basket.each do |item, count|
       if item == :apple || item == :pear
-        total += ((count / 2) + (count % 2)) * prices.fetch(item)
+        total += two_for_one(item, count)
       elsif item == :banana || item == :pineapple
         if item == :pineapple
-          total += (prices.fetch(item) / 2)
-          total += (prices.fetch(item)) * (count - 1)
+          total += half_price_for_one_item(item, count)
         else
-          total += (prices.fetch(item) / 2) * count
+          total += half_price(item, count)
         end
       elsif item == :mango
-        total += (count - (count / 4).floor) * prices.fetch(item)
+        total += buy_three_get_one_free(item, count)
       else
         total += prices.fetch(item) * count
       end
@@ -34,6 +33,22 @@ class Checkout
   end
 
   private
+
+  def two_for_one(item, count)
+    ((count / 2) + (count % 2)) * prices.fetch(item)
+  end
+
+  def half_price(item, count)
+    (count / 2.0) * prices.fetch(item)
+  end
+
+  def half_price_for_one_item(item, count)
+    (count - 0.5) * prices.fetch(item)
+  end
+
+  def buy_three_get_one_free(item, count)
+    (count - (count / 4).floor) * prices.fetch(item)
+  end
 
   def basket
     @basket ||= Hash.new(0)
