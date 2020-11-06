@@ -4,18 +4,7 @@ require 'discount_rules'
 
 RSpec.describe Sub_total do
   describe '#calculate' do
-    subject(:calculate) { sub_total.calculate(item, count) }
-    let(:sub_total) { Sub_total.new(pricing_rules)}
-    let(:pricing_rules) {
-      {
-        apple: 10,
-        orange: 20,
-        pear: 15,
-        banana: 30,
-        pineapple: 100,
-        mango: 200
-      }
-    }
+    subject(:calculate) { Sub_total.calculate(item, count) }
 
     let(:discount_rules) { double('Discount_rules') }
     let(:apple_record) { { name: :apple, discount: 'two_for_one' } }
@@ -30,7 +19,7 @@ RSpec.describe Sub_total do
       let(:count) { 5 }
 
       it 'calls #twoforone' do
-        expect_any_instance_of(Sub_total).to receive(:two_for_one).with(item, count)
+        expect_any_instance_of(Sub_total).to receive(:two_for_one)
 
         subject
       end
