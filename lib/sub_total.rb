@@ -1,3 +1,5 @@
+require 'discount_rules'
+
 class Sub_total
   attr_reader :prices
   private :prices
@@ -7,7 +9,7 @@ class Sub_total
   end
 
   def calculate(item, count)
-    self.send(discount_type(item), item, count) if discount?(item)
+    return self.send(discount_type(item), item, count) if discount?(item)
     count * prices.fetch(item)
   end
 
