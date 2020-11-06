@@ -7,13 +7,13 @@ class Checkout
   end
 
   def scan(item)
-    basket << item.to_sym
+    basket[item] += 1
   end
 
   def total
     total = 0
 
-    basket.inject(Hash.new(0)) { |items, item| items[item] += 1; items }.each do |item, count|
+    basket.each do |item, count|
       if item == :apple || item == :pear
         if (count % 2 == 0)
           total += prices.fetch(item) * (count / 2)
@@ -40,6 +40,6 @@ class Checkout
   private
 
   def basket
-    @basket ||= Array.new
+    @basket ||= Hash.new(0)
   end
 end
