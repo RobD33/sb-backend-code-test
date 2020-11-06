@@ -1,3 +1,5 @@
+require 'discount_rules'
+
 class Checkout
   attr_reader :prices
   private :prices
@@ -52,5 +54,9 @@ class Checkout
 
   def basket
     @basket ||= Hash.new(0)
+  end
+
+  def discount_rules
+    @discount_rules ||= Discount_rules.new
   end
 end
