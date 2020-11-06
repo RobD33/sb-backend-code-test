@@ -1,6 +1,4 @@
-require 'sub_total'
-
-class Checkout
+class Sub_total
   attr_reader :prices
   private :prices
 
@@ -8,22 +6,9 @@ class Checkout
     @prices = prices
   end
 
-  def scan(item)
-    basket[item] += 1
-  end
-
-  def total
-    total = 0
-
-    basket.each do |item, count|
-      if discount?(item)
-        total += self.send(discount_type(item), item, count)
-      else
-        total += count * prices.fetch(item)
-      end
-    end
-
-    total
+  def calculate(item, count)
+    self.send(discount_type(item), item, count) if discount?(item)
+    count * prices.fetch(item)
   end
 
   private
@@ -42,10 +27,6 @@ class Checkout
 
   def buy_three_get_one_free(item, count)
     (count - (count / 4).floor) * prices.fetch(item)
-  end
-
-  def basket
-    @basket ||= Hash.new(0)
   end
 
   def discount_rules
