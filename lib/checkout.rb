@@ -16,18 +16,10 @@ class Checkout
     total = 0
 
     basket.each do |item, count|
-      if item == :apple || item == :pear
-        total += two_for_one(item, count)
-      elsif item == :banana || item == :pineapple
-        if item == :pineapple
-          total += half_price_for_one_item(item, count)
-        else
-          total += half_price(item, count)
-        end
-      elsif item == :mango
-        total += buy_three_get_one_free(item, count)
+      if discount?(item)
+        total += self.send(discount_type(item), item, count)
       else
-        total += prices.fetch(item) * count
+        total += count * prices.fetch(item)
       end
     end
 
@@ -58,5 +50,13 @@ class Checkout
 
   def discount_rules
     @discount_rules ||= Discount_rules.new
+  end
+
+  def discount_type(item)
+    discount_rules.find_by_name(item)[:discount]
+  end
+
+  def discount?(item)
+    discount_rules.find_by_name(item)
   end
 end
