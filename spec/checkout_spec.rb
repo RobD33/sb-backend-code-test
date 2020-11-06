@@ -38,6 +38,16 @@ RSpec.describe Checkout do
         expect(total).to eq(10)
       end
 
+      context 'and there are more than two apples' do
+        before do
+          checkout.scan(:apple)
+        end
+
+        it 'returns the correctly discounted price for the basket' do
+          expect(total).to eq(20)
+        end
+      end
+
       context 'and there are other items' do
         before do
           checkout.scan(:orange)

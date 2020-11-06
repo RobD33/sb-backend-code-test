@@ -15,11 +15,7 @@ class Checkout
 
     basket.each do |item, count|
       if item == :apple || item == :pear
-        if (count % 2 == 0)
-          total += prices.fetch(item) * (count / 2)
-        else
-          total += prices.fetch(item) * count
-        end
+        total += ((count / 2) + (count % 2)) * prices.fetch(item)
       elsif item == :banana || item == :pineapple
         if item == :pineapple
           total += (prices.fetch(item) / 2)
